@@ -60,6 +60,20 @@ def present(text, exact=False):
     return find(text, exact) is not None
 
 
+def dismiss_anr():
+    # on a loaded CI runner the launcher itself can pop an "isn't responding"
+    # ANR dialog over the app; tapping Wait keeps the app in front
+    ns = nodes()
+    if any("isn't responding" in (n.get("text") or "") for n in ns):
+        for n in ns:
+            if (n.get("text") or "") == "Wait":
+                x, y = center(n["bounds"])
+                adb("shell", "input", "tap", str(x), str(y))
+                time.sleep(1)
+                return True
+    return False
+
+
 def tap(text, exact=False, tries=6):
     for _ in range(tries):
         n = find(text, exact)
@@ -110,6 +124,7 @@ adb("shell", "monkey", "-p", PKG, "-c", "android.intent.category.LAUNCHER", "1")
 for _ in range(40):
     if present("demo people"):
         break
+    dismiss_anr()
     time.sleep(2)
 else:
     shot("FAILED-launch")
