@@ -6,7 +6,7 @@ your phone's contact app forgets - which company they work at now, which
 ones came before, which organization they represent, what you talked about
 last time, and what you promised them.
 
-GPL-3.0 (proposed, pending owner's confirmation). Package `com.vanipy.jumpa`.
+GPL-3.0. Package `com.vanipy.jumpa`.
 
 ## What it does today (v0.1.0, prototype)
 
