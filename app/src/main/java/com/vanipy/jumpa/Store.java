@@ -24,13 +24,23 @@ public final class Store {
     private static final String KEY_SEEDED = "demoSeeded";
 
     private final Context ctx;
+    private final boolean forceDemo;
 
     public Store(Context ctx) {
+        this(ctx, false);
+    }
+
+    private Store(Context ctx, boolean forceDemo) {
         this.ctx = ctx.getApplicationContext();
+        this.forceDemo = forceDemo;
+    }
+
+    public static Store demoOnly(Context ctx) {
+        return new Store(ctx, true);
     }
 
     public boolean demoMode() {
-        return prefs().getBoolean(KEY_DEMO, true); // prototype starts in demo
+        return forceDemo || prefs().getBoolean(KEY_DEMO, true); // prototype starts in demo
     }
 
     public void setDemoMode(boolean on) {
@@ -46,12 +56,17 @@ public final class Store {
     }
 
     public synchronized List<Model.Person> load() {
-        if (demoMode() && !prefs().getBoolean(KEY_SEEDED, false)) {
+        if (demoMode() && !prefs().getBoolean(KEY_SEEDED, false) && !file().exists()) {
             List<Model.Person> seed = demoPeople();
+            if (forceDemo) return seed;
             save(seed);
             prefs().edit().putBoolean(KEY_SEEDED, true).apply();
             return seed;
         }
+        return readExisting();
+    }
+
+    private List<Model.Person> readExisting() {
         File f = file();
         if (!f.exists()) return new ArrayList<>();
         try (FileInputStream in = new FileInputStream(f)) {
@@ -72,6 +87,7 @@ public final class Store {
             }
             return out;
         } catch (Exception e) {
+            if (forceDemo) throw new IllegalStateException("demo store could not be read", e);
             // A broken file must not wipe the data: keep it, start empty view.
             return new ArrayList<>();
         }
@@ -90,6 +106,7 @@ public final class Store {
                 out.write(root.toString().getBytes(StandardCharsets.UTF_8));
             }
             if (!tmp.renameTo(file())) throw new IllegalStateException("rename failed");
+            if (demoMode()) prefs().edit().putBoolean(KEY_SEEDED, true).apply();
         } catch (Exception e) {
             throw new IllegalStateException("could not save people: " + e.getMessage(), e);
         }
@@ -105,7 +122,7 @@ public final class Store {
         List<Model.Person> out = new ArrayList<>();
 
         Model.Person nadia = new Model.Person();
-        nadia.id = Model.newId();
+        nadia.id = "demo-nadia";
         nadia.name = "Nadia Kusuma";
         Model.Affiliation a1 = new Model.Affiliation();
         a1.org = "PT Maju Bersama";
@@ -132,7 +149,7 @@ public final class Store {
         out.add(nadia);
 
         Model.Person bagus = new Model.Person();
-        bagus.id = Model.newId();
+        bagus.id = "demo-bagus";
         bagus.name = "Bagus Wibowo";
         Model.Affiliation b1 = new Model.Affiliation();
         b1.org = "Komunitas Sepeda Pagi";
@@ -148,7 +165,7 @@ public final class Store {
         out.add(bagus);
 
         Model.Person sinta = new Model.Person();
-        sinta.id = Model.newId();
+        sinta.id = "demo-sinta";
         sinta.name = "Sinta Prameswari";
         Model.Affiliation s1 = new Model.Affiliation();
         s1.org = "Yayasan Cahaya";

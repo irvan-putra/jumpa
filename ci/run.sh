@@ -13,3 +13,5 @@ RAW_ID=$(adb shell content query --uri content://com.android.contacts/raw_contac
 echo "seeded raw contact id: $RAW_ID"
 adb shell content insert --uri content://com.android.contacts/data --bind raw_contact_id:i:"$RAW_ID" --bind mimetype:s:vnd.android.cursor.item/name --bind data1:s:Uji
 python3 ci/smoke.py
+
+python3 ci/handoff_smoke.py

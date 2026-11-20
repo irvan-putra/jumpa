@@ -19,6 +19,15 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".EncounterActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="jumpa" android:host="encounter" android:path="/demo-v1" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".PersonActivity" android:exported="false" />
     </application>
 </manifest>

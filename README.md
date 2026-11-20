@@ -8,7 +8,7 @@ last time, and what you promised them.
 
 GPL-3.0. Package `com.vanipy.jumpa`.
 
-## What it does today (v0.1.0, prototype)
+## What it does today (v0.1.1, prototype)
 
 - People with **multiple dated affiliations**: company or organization,
   role, kind (employer, client, community, ...), start and end. An empty end
@@ -55,3 +55,20 @@ Android). Nothing is uploaded, ever.
 
 CI runs the same steps on every push (`.github/workflows/build.yml`).
 Signed releases follow once the jumpa signing key is set up.
+
+## Kunjung handoff prototype (0.1.1)
+
+A separate synthetic encounter page in Kunjung can open `jumpa://encounter/demo-v1`.
+Jumpa shows an editable preview, then lets you choose an existing **demo** person
+(including archived people, who stay archived) or create a new demo person.
+Only **Save to demo people** commits a dated note. Cancel writes no encounter.
+The current real/demo display setting is not changed. Real people are never read
+or written by this receiver. Opening a preview on a fresh install does not seed
+or write the demo file until Save.
+
+This is a fixed fictional demo, not a live Delta Chat client or a general import.
+It accepts no payload, query parameters, invite tokens or real contacts. Context
+is labeled as arrival context, not evidence of attendance, unless you explicitly
+check the confirmation box. Reopening the same demo cannot add a duplicate.
+No auto-merge, sync, contact write, affiliation overwrite or automatic reminder.
+Existing 0.1.0 cannot open this receiver; use 0.1.1 or newer.

@@ -80,6 +80,7 @@ public final class Model {
         public final List<Affiliation> affiliations = new ArrayList<>();
         public final List<Note> notes = new ArrayList<>();
         public final List<Promise> promises = new ArrayList<>();
+        public final List<String> encounterIds = new ArrayList<>();
 
         /** The newest current affiliation, or null when there is none. */
         public Affiliation currentAffiliation() {
@@ -142,6 +143,7 @@ public final class Model {
             promises.put(po);
         }
         o.put("promises", promises);
+        o.put("encounterIds", new JSONArray(p.encounterIds));
         return o;
     }
 
@@ -187,6 +189,9 @@ public final class Model {
                 p.promises.add(pr);
             }
         }
+        JSONArray encounterIds = o.optJSONArray("encounterIds");
+        if (encounterIds != null) for (int i = 0; i < encounterIds.length(); i++)
+            p.encounterIds.add(encounterIds.getString(i));
         return p;
     }
 }
