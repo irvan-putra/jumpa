@@ -1,0 +1,61 @@
+name: jumpa signed release
+
+# Manual only. Builds the release APK, signs it with the jumpa key from
+# repository secrets, verifies the signature and package, then publishes a
+# GitHub pre-release with a sha256 sidecar. The patuh family gate joins once
+# jumpa is registered in patuh's projects.json.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - uses: gradle/actions/setup-gradle@v4
+      - run: chmod +x ./gradlew
+      - name: Read version
+        id: v
+        run: |
+          VER=$(sed -n 's/^val appVersionName = "\(.*\)"/\1/p' app/build.gradle.kts)
+          test -n "$VER"
+          echo "version=$VER" >> "$GITHUB_OUTPUT"
+      - name: Unit tests
+        run: ./gradlew --no-daemon testDebugUnitTest
+      - name: Build and sign
+        env:
+          JUMPA_KEYSTORE_B64: ${{ secrets.JUMPA_KEYSTORE_B64 }}
+          JUMPA_STORE_PASSWORD: ${{ secrets.JUMPA_STORE_PASSWORD }}
+          JUMPA_KEY_ALIAS: ${{ secrets.JUMPA_KEY_ALIAS }}
+          JUMPA_KEY_PASSWORD: ${{ secrets.JUMPA_KEY_PASSWORD }}
+        run: |
+          echo "$JUMPA_KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/jumpa.jks"
+          export JUMPA_KEYSTORE_FILE="$RUNNER_TEMP/jumpa.jks"
+          ./gradlew --no-daemon assembleRelease
+          rm -f "$RUNNER_TEMP/jumpa.jks"
+      - name: Verify signature and package
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK=$(ls app/build/outputs/apk/release/jumpa-v*-release.apk)
+          apksigner verify --verbose "$APK"
+          aapt dump badging "$APK" | grep -q "package: name='com.vanipy.jumpa'"
+      - name: Publish pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          VER="${{ steps.v.outputs.version }}"
+          APK=$(ls app/build/outputs/apk/release/jumpa-v*-release.apk)
+          sha256sum "$APK" | sed 's| .*/|  |' > "jumpa-v${VER}.apk.sha256"
+          gh release create "v${VER}" --prerelease --title "jumpa v${VER}" \
+            --notes "jumpa v${VER}. sha256 next to the APK." \
+            "$APK" "jumpa-v${VER}.apk.sha256"
