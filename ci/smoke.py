@@ -124,6 +124,21 @@ need("Met at a design meetup")
 need("Send her the accessibility checklist")
 shot("02-person-detail")
 
+# link the seeded phone contact through the system picker
+tap("link a contact")
+time.sleep(2)
+shot("03a-contact-picker")
+tap("Uji")
+time.sleep(2)
+need("Uji")
+need("linked read-only", exact=False)
+need("unlink")
+shot("03b-contact-linked")
+
+# unlink again so the stored state stays clean
+tap("unlink")
+need("link a contact")
+
 # add a promise through the dialog
 tap("+ promise")
 need("new promise")
@@ -131,7 +146,7 @@ tap("what did you promise?")
 type_text("Share the meetup slides")
 tap("add", exact=True)
 need("Share the meetup slides")
-shot("03-promise-added")
+shot("03c-promise-added")
 
 # back to list, add a person
 adb("shell", "input", "keyevent", "4")
