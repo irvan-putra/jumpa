@@ -121,8 +121,16 @@ def need(text, exact=False):
 
 
 def type_text(s):
-    adb("shell", "input", "text", s.replace(" ", "%s"))
-    time.sleep(0.5)
+    time.sleep(1)
+    for attempt in range(3):
+        if attempt:
+            adb("shell", "input", "keyevent", "--longpress", "KEYCODE_CTRL_LEFT", "KEYCODE_A")
+            adb("shell", "input", "keyevent", "KEYCODE_DEL")
+        adb("shell", "input", "text", s.replace(" ", "%s"))
+        time.sleep(1)
+        if any(n.get("class") == "android.widget.EditText" and n.get("text") == s for n in nodes()):
+            return
+    raise AssertionError("text input did not match the intended synthetic fixture")
 
 
 # fresh start
