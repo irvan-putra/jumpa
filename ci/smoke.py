@@ -106,7 +106,15 @@ def type_text(s):
 # fresh start
 adb("shell", "pm", "clear", PKG)
 adb("shell", "monkey", "-p", PKG, "-c", "android.intent.category.LAUNCHER", "1")
-time.sleep(3)
+# cold emulator starts vary a lot; give the first screen a patient window
+for _ in range(40):
+    if present("demo people"):
+        break
+    time.sleep(2)
+else:
+    shot("FAILED-launch")
+    print("app did not reach the demo list")
+    sys.exit(1)
 
 # demo list: banner, seed people, affiliation subtitle
 need("demo people")
