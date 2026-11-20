@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- jumpa asks for no permissions at all. Linking a phone contact goes
+         through the system contact picker, which hands back a one-off read
+         grant for the contact you pick. Nothing leaves the phone. -->
+
+    <application
+        android:label="jumpa"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/JumpaTheme"
+        android:allowBackup="false"
+        android:supportsRtl="true">
+
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".PersonActivity" android:exported="false" />
+    </application>
+</manifest>
