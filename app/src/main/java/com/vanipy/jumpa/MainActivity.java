@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
             demo.setText(on ? "demo: on" : "demo: off");
             refresh();
         });
-        LinearLayout spacer = new View(this);
+        View spacer = new View(this);
         LinearLayout.LayoutParams sp = new LinearLayout.LayoutParams(0, 1, 1f);
         spacer.setLayoutParams(sp);
         top.addView(add);
