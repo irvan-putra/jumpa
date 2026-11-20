@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   consistency:
-    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@f573dfb242b3bc57f919416cff2b93d30381d39d
+    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@b3c5d671164812ea06fb44857b0f0a423ade0d66
     with:
       app: jumpa
       published: false
@@ -88,7 +88,7 @@ jobs:
 
   candidate-bytes:
     needs: release
-    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@f573dfb242b3bc57f919416cff2b93d30381d39d
+    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@b3c5d671164812ea06fb44857b0f0a423ade0d66
     with:
       app: jumpa
       published: false
@@ -120,7 +120,7 @@ jobs:
 
   verify:
     needs: publish
-    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@f573dfb242b3bc57f919416cff2b93d30381d39d
+    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@b3c5d671164812ea06fb44857b0f0a423ade0d66
     with:
       app: jumpa
       published: true
