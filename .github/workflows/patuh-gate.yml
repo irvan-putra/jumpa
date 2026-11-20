@@ -1,0 +1,18 @@
+name: patuh consistency gate
+
+# Family consistency checks from irvan-putra/patuh, qualified for jumpa.
+# On every push to main: source gate on the exact pushed tree.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-gate:
+    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@7f09acc8d270fdd59473c2a31a599ebafde25441
+    with:
+      app: jumpa
+      published: false
