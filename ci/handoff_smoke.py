@@ -35,8 +35,10 @@ def launch(uri='jumpa://encounter/demo-v1'):
     time.sleep(2)
 
 def read(name):
-    b=adb('exec-out','run-as',P,'cat','files/'+name,check=False)
-    return json.loads(b) if b else None
+    exists=subprocess.run(['adb','shell','run-as',P,'test','-f','files/'+name],capture_output=True)
+    if exists.returncode: return None
+    b=adb('exec-out','run-as',P,'cat','files/'+name)
+    return json.loads(b)
 
 def write(path,data):
     adb('shell','run-as',P,'mkdir','-p','files')
