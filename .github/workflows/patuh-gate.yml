@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   source-gate:
-    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@7f09acc8d270fdd59473c2a31a599ebafde25441
+    uses: irvan-putra/patuh/.github/workflows/release-gate.yml@f573dfb242b3bc57f919416cff2b93d30381d39d
     with:
       app: jumpa
       published: false
