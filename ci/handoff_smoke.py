@@ -13,7 +13,14 @@ def adb(*args, check=True, data=None):
 def ui():
     for _ in range(10):
         adb('shell', 'uiautomator', 'dump', '/sdcard/handoff.xml', check=False)
-        try: return [n.attrib for n in ET.fromstring(adb('exec-out', 'cat', '/sdcard/handoff.xml')).iter('node')]
+        try:
+            result = [n.attrib for n in ET.fromstring(adb('exec-out', 'cat', '/sdcard/handoff.xml')).iter('node')]
+            if any("Pixel Launcher isn't responding" in n.get('text','') for n in result):
+                wait=next((n for n in result if n.get('text')=='Wait'),None)
+                if wait:
+                    x1,y1,x2,y2=map(int,re.findall(r'\d+',wait['bounds']))
+                    adb('shell','input','tap',str((x1+x2)//2),str((y1+y2)//2));time.sleep(1);continue
+            return result
         except ET.ParseError: time.sleep(1)
     raise AssertionError('UI XML unavailable')
 

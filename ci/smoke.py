@@ -33,7 +33,15 @@ def nodes():
         try:
             if dump.returncode or raw.returncode:
                 raise ET.ParseError("UI dump command failed")
-            return [n.attrib for n in ET.fromstring(xml).iter("node")]
+            result = [n.attrib for n in ET.fromstring(xml).iter("node")]
+            if any("Pixel Launcher isn't responding" in n.get("text", "") for n in result):
+                wait = next((n for n in result if n.get("text") == "Wait"), None)
+                if wait:
+                    x, y = center(wait["bounds"])
+                    adb("shell", "input", "tap", str(x), str(y))
+                    time.sleep(1)
+                    continue
+            return result
         except ET.ParseError:
             last = repr(xml) + dump.stdout.decode("utf-8", "replace") + dump.stderr.decode("utf-8", "replace")
             time.sleep(2)
