@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jumpa - a private relationship notebook</title>
+<meta name="description" content="jumpa web: keep context for the people you meet. Data stays in this browser.">
+<link rel="icon" href="icon.png">
+<style>
+:root{--ink:#0E5C4B;--ink2:#093B30;--amber:#FFB300;--bg:#FAFAF7;--fg:#1c2421;--card:#fff;--line:#d9ddd8;--mute:#5b6560;color-scheme:light dark}
+@media(prefers-color-scheme:dark){:root{--bg:#101513;--fg:#e8ece9;--card:#18201d;--line:#2c3733;--mute:#9aa6a0}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,sans-serif}
+header{background:var(--ink);color:#fff;padding:.7rem 1rem;display:flex;align-items:center;gap:.7rem}
+header img{width:36px;height:36px;border-radius:8px}
+header h1{font-size:1.15rem;margin:0;flex:1}
+header a{color:#fff}
+main{max-width:44rem;margin:0 auto;padding:.8rem 1rem 3rem}
+.banner{border:1px solid var(--line);border-left:4px solid var(--amber);background:var(--card);border-radius:8px;padding:.55rem .7rem;margin:.6rem 0;font-size:.92rem}
+.row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center;margin:.5rem 0}
+button,.btn,select,input,textarea{font:inherit;color:inherit}
+button,.btn{padding:.5rem .8rem;border:1px solid var(--line);border-radius:8px;background:var(--card);cursor:pointer;text-decoration:none;display:inline-block;min-height:44px}
+button.primary,.btn.primary{background:var(--ink);border-color:var(--ink);color:#fff}
+button[aria-pressed=true]{background:var(--ink2);color:#fff;border-color:var(--ink2)}
+input,textarea,select{width:100%;padding:.5rem;border:1px solid var(--line);border-radius:8px;background:var(--card);min-height:44px}
+textarea{min-height:5rem}
+label{display:block;font-size:.85rem;color:var(--mute);margin:.5rem 0 .15rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;margin:.5rem 0}
+.person{display:block;width:100%;text-align:left;min-height:64px}
+.person b{display:block}.sub{color:var(--mute);font-size:.88rem}
+.tag{display:inline-block;font-size:.75rem;border:1px solid var(--line);border-radius:99px;padding:0 .5rem;margin-left:.3rem;color:var(--mute)}
+h2{font-size:1.05rem;margin:1.1rem 0 .3rem}
+.done{text-decoration:line-through;color:var(--mute)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.err{color:#b3261e;font-size:.9rem}
+details{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:.2rem .8rem;margin:.6rem 0}
+summary{cursor:pointer;padding:.5rem 0;font-weight:600}
+ol,ul{padding-left:1.2rem}li{margin:.25rem 0}
+code{font-size:.82rem;word-break:break-all}
+footer{color:var(--mute);font-size:.85rem;margin-top:1.5rem}
+</style>
+</head>
+<body>
+<header><img src="icon.png" alt="" width="36" height="36"><h1>jumpa</h1><a href="https://github.com/irvan-putra/jumpa">source</a></header>
+<main>
+  <div id="app"></div>
+
+  <details open id="howto">
+    <summary>How to use this page</summary>
+    <ol>
+      <li>Nothing to install and no account. Open this page and tap <b>Add person</b>.</li>
+      <li>It starts in <b>Demo</b> mode with three invented people. Tap <b>My people</b> to switch to your own, empty list. The two lists are stored separately.</li>
+      <li>For each person add dated affiliations (a company now, one before), notes and promises. Dates are loose text: <code>2024</code> or <code>2024-06</code>. Leave the end empty for "current".</li>
+      <li>Use <b>Export JSON</b> for a backup file. <b>Import JSON</b> adds copies of the people in a file; it never overwrites anyone.</li>
+      <li>On a phone, use your browser's <b>Add to Home screen</b> to open it like an app.</li>
+    </ol>
+  </details>
+
+  <details open id="limits">
+    <summary>What stays Android-only</summary>
+    <ul>
+      <li><b>Linking a phone contact</b> through the system contact picker. A web page cannot read your contacts, so people here are not linked to Samsung or Google contacts.</li>
+      <li><b>The Kunjung handoff</b> (<code>jumpa://encounter/...</code>). It opens the Android app only.</li>
+      <li><b>No sync.</b> This page and the Android app keep separate data. Nothing moves between them automatically.</li>
+    </ul>
+    <p class="sub">Same on both: people with dated affiliations, notes, promises, archive instead of delete, and a separate demo set.</p>
+  </details>
+
+  <details open id="android">
+    <summary>Get the Android app</summary>
+    <ol>
+      <li>Download <a href="https://github.com/irvan-putra/jumpa/releases/download/v0.1.1/jumpa-v0.1.1.apk">jumpa-v0.1.1.apk</a> (<a href="https://github.com/irvan-putra/jumpa/releases/tag/v0.1.1">release notes</a>).</li>
+      <li>Open the file. If Android asks, allow installs from your browser or files app for this one install.</li>
+      <li>Optional: check the SHA-256 matches <code>8d2f7e055f4168c7202564dbdd27d39f19e696711a7351f433ab7d0cfa906aec</code>.</li>
+    </ol>
+    <p class="sub">Test release, signed, zero Android permissions. Physical-phone behavior is not fully verified.</p>
+  </details>
+
+  <details id="privacy">
+    <summary>Privacy</summary>
+    <p>Everything is saved in this browser's local storage. Nothing is uploaded: this page has no server, accounts or analytics. Clearing site data erases your people, and exports are plain unencrypted text. Anyone using this browser profile can read them.</p>
+  </details>
+
+  <footer>jumpa is GPL-3.0. <a href="https://github.com/irvan-putra/jumpa">Source</a> · <a href="https://github.com/irvan-putra/jumpa/releases">Android releases</a> · <a href="https://github.com/irvan-putra/kunjung">Kunjung</a></footer>
+</main>
+<script src="core.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

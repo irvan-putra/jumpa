@@ -24,6 +24,15 @@ on the [releases page](https://github.com/irvan-putra/jumpa/releases).
   a separate file and is never mixed with the demo set.
 - Archive, never delete: long-press a person to archive or restore them.
 
+## Web version
+
+<https://vanipy.com/jumpa/> runs in any browser: people, dated affiliations,
+notes, promises, archive, and a separate demo set (starts in demo mode with
+three invented people). Data stays in the browser's local storage, with plain
+JSON export and copy-only import. Not in the web version: phone-contact
+linking, the Kunjung handoff, and any sync with the Android app (separate
+data). Source: `web/`; logic tests: `node tests/web-core.test.js`.
+
 ## Honest limits
 
 - The system picker's read grant is temporary. Reopening a linked contact
