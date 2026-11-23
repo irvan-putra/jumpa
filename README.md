@@ -6,7 +6,8 @@ your phone's contact app forgets - which company they work at now, which
 ones came before, which organization they represent, what you talked about
 last time, and what you promised them.
 
-GPL-3.0. Package `com.vanipy.jumpa`.
+GPL-3.0. Package `com.vanipy.jumpa`. Signed APKs with SHA-256 sidecars are
+on the [releases page](https://github.com/irvan-putra/jumpa/releases).
 
 ## What it does today (v0.1.1, prototype)
 
@@ -54,11 +55,14 @@ Android). Nothing is uploaded, ever.
     ./gradlew testDebugUnitTest assembleDebug
 
 CI runs the same steps on every push (`.github/workflows/build.yml`).
-Signed releases follow once the jumpa signing key is set up.
+Releases are signed with the jumpa signing key and published as
+pre-releases with a `.sha256` sidecar per APK.
 
 ## Kunjung handoff prototype (0.1.1)
 
-A separate synthetic encounter page in Kunjung can open `jumpa://encounter/demo-v1`.
+A separate synthetic encounter page in
+[Kunjung](https://github.com/irvan-putra/kunjung) can open
+`jumpa://encounter/demo-v1`.
 Jumpa shows an editable preview, then lets you choose an existing **demo** person
 (including archived people, who stay archived) or create a new demo person.
 Only **Save to demo people** commits a dated note. Cancel writes no encounter.
