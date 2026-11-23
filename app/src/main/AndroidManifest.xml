@@ -7,7 +7,7 @@
 
     <application
         android:label="jumpa"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher"
         android:theme="@style/JumpaTheme"
         android:allowBackup="false"
         android:supportsRtl="true">
