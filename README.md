@@ -85,3 +85,7 @@ is labeled as arrival context, not evidence of attendance, unless you explicitly
 check the confirmation box. Reopening the same demo cannot add a duplicate.
 No auto-merge, sync, contact write, affiliation overwrite or automatic reminder.
 Existing 0.1.0 cannot open this receiver; use 0.1.1 or newer.
+
+---
+
+Built with AI assistance (Instinct and others). Not everything has been reviewed by Irvan.
