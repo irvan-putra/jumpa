@@ -57,3 +57,12 @@ t("reset demo restores the seed", () => {
   const s = mem(); C.save(s, "demo", []); assert.equal(C.load(s, "demo").length, 0); C.resetDemo(s); assert.equal(C.load(s, "demo").length, 3);
 });
 console.log(n + " tests passed");
+
+t("current affiliation is the NEWEST current one, matching Android Model.java", () => {
+  const p = { affiliations: [{ role: "old", start: "2020" }, { role: "new", start: "2024" }] };
+  assert.equal(C.currentAffiliation(p).role, "new");
+  const q = { affiliations: [{ role: "new", start: "2024" }, { role: "old", start: "2020" }] };
+  assert.equal(C.currentAffiliation(q).role, "new");
+  assert.equal(C.currentAffiliation({ affiliations: [{ role: "ended", start: "2024", end: "2025" }] }), null);
+  assert.equal(C.currentAffiliation({ affiliations: [{ role: "nostart" }, { role: "started", start: "2019" }] }).role, "started");
+});

@@ -22,8 +22,20 @@
     return a.kind ? core + " (" + a.kind + ")" : core;
   }
   function currentAffiliation(p) {
-    for (var i = 0; i < p.affiliations.length; i++) if (!p.affiliations[i].end) return p.affiliations[i];
-    return null;
+    var best = null;
+    var bestStart = "";
+    var i, a, s;
+    for (i = 0; i < p.affiliations.length; i++) {
+      a = p.affiliations[i];
+      if (!a.end) {
+        s = (typeof a.start === "string" && a.start) ? a.start : "";
+        if (best === null || s > bestStart) {
+          best = a;
+          bestStart = s;
+        }
+      }
+    }
+    return best;
   }
   function openPromises(p) { return p.promises.filter(function (x) { return !x.done; }).length; }
 
