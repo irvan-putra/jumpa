@@ -88,4 +88,4 @@ Existing 0.1.0 cannot open this receiver; use 0.1.1 or newer.
 
 ---
 
-Built with AI assistance (Instinct and others). Not everything has been reviewed by Irvan. No Fenrir usage in this repo.
+Built with AI assistance (Instinct and others). Not everything has been reviewed by Irvan.
